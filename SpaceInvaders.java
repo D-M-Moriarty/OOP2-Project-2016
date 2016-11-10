@@ -83,6 +83,13 @@ public class SpaceInvaders extends JFrame implements KeyListener{
     @Override
     public void keyReleased(KeyEvent e){
 
+//        int key = e.getKeyCode();
+//
+//        if (key == KeyEvent.VK_SPACE) {
+//            tank.shootBullet();
+//        }
+//
+//        tank.repaint();
     }
 
 
