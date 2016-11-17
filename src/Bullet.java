@@ -58,7 +58,8 @@ public class Bullet extends GameComponent {
     // This method removes a bullet from the ArrayList of bullets once its hit an enemy or passed the top of the screen
     public void removeBullet(){
         if(getTopLeftYPos() + height < 0){
-            SpaceInvadersGUI.bullets.remove(0);
+                SpaceInvadersGUI.bullets.remove(this);
+
         }
     }
 
@@ -78,71 +79,17 @@ public class Bullet extends GameComponent {
 
     }
 
+    public boolean collidesWith(GameComponent g)
+    {
+        //for a bullet heading upwards from the tank
+        //if(type.equals("tank"))
+        if(getTopLeftXPos()>=g.getTopLeftXPos() && getTopLeftXPos()<=g.getTopLeftXPos()+g.getWidth())
+            if(Math.abs(getTopLeftYPos()-g.getTopLeftYPos())<=g.getHeight())
+                return true;
 
-    @Override
-    public void setTopLeftYPos(int topLeftYPos) {
-        this.topLeftYPos = topLeftYPos;
+        return false;
     }
 
-    @Override
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    @Override
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    @Override
-    public void setColor(Color color) {
-        this.height = height;
-    }
-
-    @Override
-    public int getTopLeftXPos() {
-        return this.topLeftXPos;
-    }
-
-    @Override
-    public int getTopLeftYPos() {
-        return this.topLeftYPos;
-    }
-
-    @Override
-    public int getWidth() {
-        return this.width;
-    }
-
-    @Override
-    public int getHeight() {
-        return this.height;
-    }
-
-    @Override
-    public Color getColor() {
-        return this.color;
-    }
-
-    @Override
-    public void moveLeft() {
-
-    }
-
-    @Override
-    public void moveRight() {
-
-    }
-
-    @Override
-    public void moveUp() {
-
-    }
-
-    @Override
-    public void MoveDown() {
-
-    }
 
 
 }

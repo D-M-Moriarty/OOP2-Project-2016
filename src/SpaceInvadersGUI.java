@@ -43,21 +43,15 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
     public static ArrayList<Bullet> bullets;
     private AlienInvaders alien;
     private Bullet bullet;
+    private AlienInvaders2 aliens;
     private static int playerScore = 0;
 
-    public void shoot(){
-        for (int i = 0; i < bullets.size(); i++){
-            bullet = bullets.get(i);
-
-            bullet.fireBullet();
-        }
-    }
 
     // JPanel Constructor
     public SpaceInvadersGUI(){
         // Calls the default constructor
         super();
-        // Sets the size of the panel to the Widht and Height constants
+        // Sets the size of the panel to the Width and Height constants
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         //to make sure the SpaceInvadersGUI can be focused on
@@ -100,12 +94,15 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         g = (Graphics2D) image.getGraphics();
 
         // Initialises the GameComponents entities
-        tank = new Tank(400, 580, 100, 50, Color.GREEN, 3, 5);
-        barrel = new Barrel(445, 570, 10, 10, Color.GREEN, 5);
-        barrier = new Barrier(100, 470, 10, 10, Color.GREEN);
-        barrier2 = new Barrier(450, 470, 10, 10, Color.GREEN);
-        barrier3 = new Barrier(800, 470, 10, 10, Color.GREEN);
+        tank = new Tank(400, 580, 120, 50, Color.GREEN, 3, 5);
+        barrel = new Barrel(455, 570, 10, 10, Color.GREEN, 5);
+        barrier = new Barrier(90, 470, 120, 70, Color.GREEN);
+        barrier2 = new Barrier(450, 470, 120, 70, Color.GREEN);
+        barrier3 = new Barrier(790, 470, 120, 70, Color.GREEN);
         alien = new AlienInvaders(50, 20, 50, 50, Color.GREEN);
+        aliens = new AlienInvaders2(50, 20, 50, 50, Color.WHITE);
+
+
 
         // Initialising the ArrayList of Bullets
         bullets = new ArrayList<Bullet>();
@@ -176,22 +173,13 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         tank.update();
         barrel.update();
         barrier.update();
-        alien.update();
+        aliens.update();
 
 
         for(int i = 0; i < bullets.size(); i++){
             bullets.get(i).update();
 
         }
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -219,7 +207,7 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         barrier.draw(g);
         barrier2.draw(g);
         barrier3.draw(g);
-        alien.draw(g);
+        aliens.draw(g);
 
         // Drawing ArrayList of bullets
         for(int i = 0; i < bullets.size(); i++){

@@ -18,7 +18,7 @@ public class BarrierBlock extends GameComponent {
     private boolean destroyed;
 
     /**
-     * 6 argument contructor method
+     * 6 argument constructor method
      *
      * @param topLeftXPos
      * @param topLeftYPos
@@ -36,7 +36,7 @@ public class BarrierBlock extends GameComponent {
      * This sets the value of destroyed
      * @param destroyed
      */
-    private void setDestroyed(boolean destroyed){
+    public void setDestroyed(boolean destroyed){
         this.destroyed = destroyed;
     }
 
@@ -44,7 +44,7 @@ public class BarrierBlock extends GameComponent {
      * This returns the value of destroyed
      * @return
      */
-    private boolean isDestroyed() {
+    public boolean isDestroyed() {
         return destroyed;
     }
 
@@ -67,73 +67,4 @@ public class BarrierBlock extends GameComponent {
         return "BarrierBlock class is working";
     }
 
-    @Override
-    public void setTopLeftXPos(int topLeftXPos) {
-        this.topLeftXPos = topLeftXPos;
-    }
-
-    @Override
-    public void setTopLeftYPos(int topLeftYPos) {
-        this.topLeftYPos = topLeftYPos;
-    }
-
-    @Override
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    @Override
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    @Override
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    @Override
-    public int getTopLeftXPos() {
-        return this.topLeftXPos;
-    }
-
-    @Override
-    public int getTopLeftYPos() {
-        return this.topLeftYPos;
-    }
-
-    @Override
-    public int getWidth() {
-        return this.width;
-    }
-
-    @Override
-    public int getHeight() {
-        return this.height;
-    }
-
-    @Override
-    public Color getColor() {
-        return this.color;
-    }
-
-    @Override
-    public void moveLeft() {
-
-    }
-
-    @Override
-    public void moveRight() {
-
-    }
-
-    @Override
-    public void moveUp() {
-
-    }
-
-    @Override
-    public void MoveDown() {
-
-    }
 }

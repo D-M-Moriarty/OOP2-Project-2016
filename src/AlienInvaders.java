@@ -148,6 +148,11 @@ public class AlienInvaders extends GameComponent {
         if (gerX > 0)
             g.drawImage(gerImage.getImage(), gerX, 10, null);
 
+        g.setColor(Color.RED);
+        if(gerX > -20 && gerX < 100){
+            g.drawString("OH no, Its Ger!!!!!", 400, 20);
+        }
+
 
     }
 
@@ -176,9 +181,6 @@ public class AlienInvaders extends GameComponent {
         }
 
 
-
-
-
     }
 
     public static void setGerX(int x){
@@ -189,74 +191,4 @@ public class AlienInvaders extends GameComponent {
         return gerX;
     }
 
-    @Override
-    public void setTopLeftXPos(int topLeftXPos) {
-
-    }
-
-    @Override
-    public void setTopLeftYPos(int topLeftYPos) {
-
-    }
-
-    @Override
-    public void setWidth(int width) {
-
-    }
-
-    @Override
-    public void setHeight(int height) {
-
-    }
-
-    @Override
-    public void setColor(Color color) {
-
-    }
-
-    @Override
-    public int getTopLeftXPos() {
-        return 0;
-    }
-
-    @Override
-    public int getTopLeftYPos() {
-        return 0;
-    }
-
-    @Override
-    public int getWidth() {
-        return 0;
-    }
-
-    @Override
-    public int getHeight() {
-        return 0;
-    }
-
-    @Override
-    public Color getColor() {
-        return null;
-    }
-
-
-    @Override
-    public void moveLeft() {
-
-    }
-
-    @Override
-    public void moveRight() {
-
-    }
-
-    @Override
-    public void moveUp() {
-
-    }
-
-    @Override
-    public void MoveDown() {
-
-    }
 }

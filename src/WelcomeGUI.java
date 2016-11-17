@@ -1,12 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 /**
  * This is the JPanel class which is just a flat container for holding components
@@ -21,6 +14,7 @@ public class WelcomeGUI extends JPanel {
 
 
     // Class Attributes
+    //JButton startGame = new JButton("Start Game");
 
     // width of the panel
     public static final int WIDTH = 1000;
@@ -35,12 +29,6 @@ public class WelcomeGUI extends JPanel {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
 
-        //startGame.setLocation(400,400);
-
-//        add(startGame);
-//
-//        startGame.addActionListener(new ButtonHandler());
-
 
         //to make sure the SpaceInvadersGUI can be focused on
         setFocusable(true);
@@ -48,11 +36,12 @@ public class WelcomeGUI extends JPanel {
         requestFocus();
     }
 
-//    private class ButtonHandler implements ActionListener{
+//    private class ButtonHandler implements ActionListener {
 //        public void actionPerformed(ActionEvent e){
 //            System.out.println("Button handler is working");
 //
-//            WelcomeGUI.this.setVisible(false);
+//            setVisible(false);
+//
 //        }
 //    }
 

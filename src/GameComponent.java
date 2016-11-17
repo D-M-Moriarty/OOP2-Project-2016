@@ -36,11 +36,11 @@ public abstract class GameComponent {
      * this.width = width assigns the value of the argument to the class attribute
      */
     public GameComponent(int topLeftXPos, int topLeftYPos, int width, int height, Color color){
-        this.topLeftXPos = topLeftXPos;
-        this.topLeftYPos = topLeftYPos;
-        this.width = width;
-        this.height = height;
-        this.color = color;
+        setTopLeftXPos(topLeftXPos);
+        setTopLeftYPos(topLeftYPos);
+        setWidth(width);
+        setHeight(height);
+        setColor(color);
     }
 
     // List of abstract methods
@@ -49,31 +49,59 @@ public abstract class GameComponent {
      * of the entity being created
      * THis is from the left of the screen towards th right
      @param topLeftXPos the top left corner*/
-    public abstract void setTopLeftXPos(int topLeftXPos);
+    public void setTopLeftXPos(int topLeftXPos) {
+        this.topLeftXPos = topLeftXPos;
+    }
 
-    /** mutator method to set the top left Y position
+    /**
+     * mutator method to set the top left Y position
      * of the entity being created
      * This is from the top of the screen down
-     @param topLeftYPos the top left corner*/
-    public abstract void setTopLeftYPos(int topLeftYPos);
+     *
+     * @param topLeftYPos the top left corner
+     */
+    public void setTopLeftYPos(int topLeftYPos) {
+        this.topLeftYPos = topLeftYPos;
+    }
 
-    public abstract void setWidth(int width);
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
-    public abstract void  setHeight(int height);
 
-    public abstract void setColor(Color color);
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
-    /** accessor method to return the top left X position
-     * @return topLeftYPos the top left corner */
-    public abstract int getTopLeftXPos();
 
-    public abstract int getTopLeftYPos();
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
-    public abstract int getWidth();
 
-    public abstract int getHeight();
+    public int getTopLeftXPos() {
+        return this.topLeftXPos;
+    }
 
-    public abstract Color getColor();
+
+    public int getTopLeftYPos() {
+        return this.topLeftYPos;
+    }
+
+
+    public int getWidth() {
+        return this.width;
+    }
+
+
+    public int getHeight() {
+        return this.height;
+    }
+
+
+    public Color getColor() {
+        return this.color;
+    }
 
     /**
      * This method draws graphics to the screen
@@ -83,13 +111,6 @@ public abstract class GameComponent {
 
     public abstract void update();
 
-    public abstract void moveLeft();
-
-    public abstract void moveRight();
-
-    public abstract void moveUp();
-
-    public abstract void MoveDown();
 
     /**
      *

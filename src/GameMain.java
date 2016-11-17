@@ -18,6 +18,7 @@ public class GameMain extends JFrame{
     JPanel welcomeGUI = new WelcomeGUI();
     JPanel contPanel = new JPanel();
     JButton startGame = new JButton("Start Game");
+    Container contentPane;
 
 
     // JFrame GUI constructor method
@@ -27,30 +28,48 @@ public class GameMain extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(200,0);
 
-        contPanel.setLayout(cardLayout);
-        welcomeGUI.add(startGame);
+        setContentPane(new SpaceInvadersGUI());
 
-        contPanel.add(spaceGui, "2");
-        contPanel.add(welcomeGUI, "1");
+//        contentPane.add(startGame);
+//
+//        add(contentPane);
+//
+//        contentPane.setVisible(true);
 
-        cardLayout.show(contPanel, "2");
+        // This sets the size of the JFrame to whatever the size of the Component inside it is
+        pack();
+        setVisible(true);
+
+
 
 
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(contPanel, "1");
+                contentPane.removeAll();
+                contentPane.add(spaceGui);
+                System.out.println("new panel created");//for debugging purposes
+                validate();
+                setVisible(true);
             }
         });
 
-        add(contPanel);
+        //        contPanel.setLayout(cardLayout);
+//        welcomeGUI.add(startGame);
+//
+//        contPanel.add(spaceGui, "2");
+//        contPanel.add(welcomeGUI, "1");
+//
+//        setContentPane(contPanel);
+//
+//        cardLayout.show(contPanel, "2");
+
+
 
         // Setting the content pane to the SpaceInvadersGUI
         //setContentPane(new SpaceInvadersGUI());
 
-        // This sets the size of the JFrame to whatever the size of the Component inside it is
-        pack();
-        setVisible(true);
+
 
         //Chaninging the window closing
 //        addWindowListener(
@@ -76,7 +95,6 @@ public class GameMain extends JFrame{
 
 
     }
-
 
 
     // main method creates a new JFrame called GameMain

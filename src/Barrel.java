@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This is an instantiable class called Barrel for creating a barrel entity.
@@ -25,6 +24,8 @@ public class Barrel extends GameComponent {
     private int deltaX;
     // The initial speed to travel horizontally
     private int horizontalSpeed;
+    // Shooting sound
+    private Sound firingSound;
 
     /**
      * 6 argument constructor method
@@ -42,6 +43,8 @@ public class Barrel extends GameComponent {
     public Barrel(int topLeftXPos, int topLeftYPos, int width, int height, Color color, int horizontalSpeed) {
         super(topLeftXPos, topLeftYPos, width, height, color);
         setHorizontalSpeed(horizontalSpeed);
+
+        //firingSound = new Sound("/Space Invaders/sounds/shoot.wav");
     }
 
     /**
@@ -89,11 +92,11 @@ public class Barrel extends GameComponent {
         }
 
         // This insures that the entity doesn't travel outside the green line at the bottom of the screen
-        if(topLeftXPos > 1000 - width - 70){
-            topLeftXPos = 1000 - width - 70;
+        if(topLeftXPos > 1000 - width - 80){
+            topLeftXPos = 1000 - width - 80;
         }
-        if(topLeftXPos < 70){
-            topLeftXPos = 70;
+        if(topLeftXPos < 80){
+            topLeftXPos = 80;
         }
 
         // Resetting deltaX to 0
@@ -104,12 +107,16 @@ public class Barrel extends GameComponent {
             // Adding a new instance of a bullet to the arrayList of bullets
             SpaceInvadersGUI.bullets.add(new Bullet(this.getTopLeftXPos() + (width / 4), 570, 5, 10, Color.WHITE));
 
-            try{
+//            if(firingSound.isPlayer()){
+//                firingSound.stop();
+//            }firingSound.play();
+//
+            //try{
                 // setting firing to false and waiting for 10 milliseconds
-                firing = false;
-                TimeUnit.MILLISECONDS.sleep(10);
-            }catch (Exception e){}
-        }
+                  firing = false;
+//                TimeUnit.MILLISECONDS.sleep(1);
+//            }catch (Exception e){}
+       }
 
 
 
@@ -127,76 +134,6 @@ public class Barrel extends GameComponent {
         return "Barrel class is working";
     }
 
-    @Override
-    public void setTopLeftXPos(int topLeftXPos) {
-        this.topLeftXPos = topLeftXPos;
-    }
-
-    @Override
-    public void setTopLeftYPos(int topLeftYPos) {
-
-    }
-
-    @Override
-    public void setWidth(int width) {
-
-    }
-
-    @Override
-    public void setHeight(int height) {
-
-    }
-
-    @Override
-    public void setColor(Color color) {
-
-    }
-
-    @Override
-    public int getTopLeftXPos() {
-        return topLeftXPos;
-    }
-
-    @Override
-    public int getTopLeftYPos() {
-        return topLeftYPos;
-    }
-
-    @Override
-    public int getWidth() {
-        return 0;
-    }
-
-    @Override
-    public int getHeight() {
-        return 0;
-    }
-
-    @Override
-    public Color getColor() {
-        return null;
-    }
-
-    @Override
-    public void moveLeft() {
-
-    }
-
-    @Override
-    public void moveRight() {
-
-    }
-
-    @Override
-    public void moveUp() {
-
-    }
-
-
-    @Override
-    public void MoveDown() {
-
-    }
 
 
 }

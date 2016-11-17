@@ -81,8 +81,8 @@ public class Tank extends GameComponent{
 
         g.setColor(getColor());
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.drawRect(topLeftXPos, topLeftYPos, width, height);
-        g.fillRect(topLeftXPos, topLeftYPos, width, height);
+        g.drawRect(getTopLeftXPos(), getTopLeftYPos(), getWidth(), getHeight());
+        g.fillRect(getTopLeftXPos(), getTopLeftYPos(), getWidth(), getHeight());
 
     }
 
@@ -123,75 +123,5 @@ public class Tank extends GameComponent{
 
 
 
-    @Override
-    public void setTopLeftXPos(int topLeftXPos) {
-        this.topLeftXPos = topLeftXPos;
-    }
-
-    @Override
-    public void setTopLeftYPos(int topLeftYPos) {
-
-    }
-
-    @Override
-    public void setWidth(int width) {
-
-    }
-
-    @Override
-    public void setHeight(int height) {
-
-    }
-
-    @Override
-    public void setColor(Color color) {
-
-    }
-
-    @Override
-    public int getTopLeftXPos() {
-        return 0;
-    }
-
-    @Override
-    public int getTopLeftYPos() {
-        return 0;
-    }
-
-    @Override
-    public int getWidth() {
-        return 0;
-    }
-
-    @Override
-    public int getHeight() {
-        return 0;
-    }
-
-    @Override
-    public Color getColor() {
-        return null;
-    }
-
-
-    @Override
-    public void moveLeft() {
-
-    }
-
-    @Override
-    public void moveRight() {
-
-    }
-
-    @Override
-    public void moveUp() {
-
-    }
-
-    @Override
-    public void MoveDown() {
-
-    }
 
 }
