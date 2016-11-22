@@ -70,6 +70,35 @@ public class Barrier extends GameComponent {
 
         }
 
+        for (int k = 0; k < SpaceInvadersGUI.alienBullets.size(); k++) {
+            AlienBullet bullet = SpaceInvadersGUI.alienBullets.get(k);
+
+
+            for (int i = 0; i < 7; i++) {
+                for (int j = 0; j < 12; j++) {
+
+                    if (bullet.collidesWith(barrierBlocks[i][j])) {
+                        //SpaceInvadersGUI.setPlayerScore(SpaceInvadersGUI.getPlayerScore() + 10);
+                        SpaceInvadersGUI.alienBullets.remove(bullet);
+                        barrierBlocks[i][j].setHeight(-1);
+                        barrierBlocks[i][j].setWidth(-1);
+                        barrierBlocks[i][j].setTopLeftXPos(-1);
+                        barrierBlocks[i][j].setTopLeftYPos(-1);
+                        barrierBlocks[i][j].setDestroyed(true);
+
+                    }
+                }
+            }
+
+
+
+
+        }
+
+
+
+
+
 
     }
 

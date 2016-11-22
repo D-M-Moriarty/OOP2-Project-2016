@@ -38,11 +38,15 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
 
     // Declaring entity objects
     private Tank tank;
+    public static Tank tankLife1;
+    public static Tank tankLife2;
+    public static Tank tankLife3;
     private Barrel barrel;
-    private  Barrier barrier, barrier2, barrier3;
+    private  Barrier[] barrier;
     public static ArrayList<Bullet> bullets;
     private AlienInvaders alien;
     private Bullet bullet;
+    public static ArrayList<AlienBullet> alienBullets;
     private AlienInvaders2 aliens;
     private static int playerScore = 0;
 
@@ -95,17 +99,36 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
 
         // Initialises the GameComponents entities
         tank = new Tank(400, 580, 120, 50, Color.GREEN, 3, 5);
+        tankLife1 = new Tank(920, 10, 60, 25, Color.GREEN, 3, 5);
+        tankLife2 = new Tank(850, 10, 60, 25, Color.GREEN, 3, 5);
+        tankLife3 = new Tank(780, 10, 60, 25, Color.GREEN, 3, 5);
         barrel = new Barrel(455, 570, 10, 10, Color.GREEN, 5);
-        barrier = new Barrier(90, 470, 120, 70, Color.GREEN);
-        barrier2 = new Barrier(450, 470, 120, 70, Color.GREEN);
-        barrier3 = new Barrier(790, 470, 120, 70, Color.GREEN);
+
+        barrier = new Barrier[3];
+
+        for (int i = 0; i < 3; i++) {
+            barrier[i] = new Barrier(90, 470, 120, 70, Color.GREEN);
+
+            if(i == 1){
+                barrier[i] = new Barrier(450, 470, 120, 70, Color.GREEN);
+            }else if (i == 2){
+                barrier[i] = new Barrier(790, 470, 120, 70, Color.GREEN);
+            }
+        }
+
+
+
+
         alien = new AlienInvaders(50, 20, 50, 50, Color.GREEN);
-        aliens = new AlienInvaders2(50, 20, 50, 50, Color.WHITE);
+        aliens = new AlienInvaders2(50, 50, 50, 50, Color.WHITE);
 
 
 
         // Initialising the ArrayList of Bullets
         bullets = new ArrayList<Bullet>();
+
+        // Initialising the ArrayList of AlienBullets
+        alienBullets = new ArrayList<AlienBullet>();
 
 
         // Declaring variables to determine loop length time
@@ -172,12 +195,22 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
     private void gameUpdate() {
         tank.update();
         barrel.update();
-        barrier.update();
+
+
+        for (int i = 0; i < 3; i++) {
+            barrier[i].update();
+        }
+
         aliens.update();
 
 
         for(int i = 0; i < bullets.size(); i++){
             bullets.get(i).update();
+
+        }
+
+        for(int i = 0; i < alienBullets.size(); i++){
+            alienBullets.get(i).update();
 
         }
 
@@ -203,15 +236,27 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
 
         // draws the updated object values
         tank.draw(g);
+        tankLife1.draw(g);
+        tankLife2.draw(g);
+        tankLife3.draw(g);
         barrel.draw(g);
-        barrier.draw(g);
-        barrier2.draw(g);
-        barrier3.draw(g);
+
+        for (int i = 0; i < 3; i++) {
+            barrier[i].draw(g);
+        }
+
+        //barrier2.draw(g);
+        //barrier3.draw(g);
         aliens.draw(g);
 
         // Drawing ArrayList of bullets
         for(int i = 0; i < bullets.size(); i++){
             bullets.get(i).draw(g);
+        }
+
+        // Drawing ArrayList of AlienBullets
+        for(int i = 0; i < alienBullets.size(); i++){
+            alienBullets.get(i).draw(g);
         }
 
 
@@ -253,6 +298,10 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         if(key == KeyEvent.VK_SPACE){
             barrel.setFiring(false);
         }
+
+        if (key == KeyEvent.VK_Z){
+            aliens.setFiring(false);
+        }
     }
 
     @Override
@@ -274,6 +323,10 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
 
         if(key == KeyEvent.VK_SPACE){
             barrel.setFiring(true);
+        }
+
+        if (key == KeyEvent.VK_Z){
+            aliens.setFiring(true);
         }
     }
 }

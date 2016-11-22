@@ -18,7 +18,7 @@ public class Barrel extends GameComponent {
     private boolean left;
     private boolean right;
     // Boolean to show that space bar has been pressed
-    private boolean firing;
+    private static boolean firing;
     /* The difference between the initial x position and the new x position
         This is the amount of pixels the entity will move per second/update */
     private int deltaX;
@@ -43,7 +43,6 @@ public class Barrel extends GameComponent {
     public Barrel(int topLeftXPos, int topLeftYPos, int width, int height, Color color, int horizontalSpeed) {
         super(topLeftXPos, topLeftYPos, width, height, color);
         setHorizontalSpeed(horizontalSpeed);
-
         //firingSound = new Sound("/Space Invaders/sounds/shoot.wav");
     }
 
@@ -69,6 +68,10 @@ public class Barrel extends GameComponent {
     
     public void setFiring(boolean firing) {
         this.firing = firing;
+    }
+
+    public static boolean isFiring(){
+        return firing;
     }
 
 

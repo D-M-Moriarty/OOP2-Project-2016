@@ -1,16 +1,10 @@
 import java.awt.*;
 
 /**
- * This is an instantiable class called Bullet for creating a bullet entity.
- * It is a sub-class of GameComponent therefore it inherits all of its
- * attributes and abstract methods
- *
- * @author Darren Moriarty
- * created on 11/11/2016.
- *
- * @version 2.0
+ * Created by Darren Moriarty on 21/11/2016.
  */
-public class Bullet extends GameComponent {
+public class AlienBullet extends GameComponent {
+
 
     // Class Attributes
 
@@ -31,7 +25,7 @@ public class Bullet extends GameComponent {
      * @param height
      * @param color
      */
-    public Bullet(int topLeftXPos, int topLeftYPos, int width, int height, Color color) {
+    public AlienBullet(int topLeftXPos, int topLeftYPos, int width, int height, Color color) {
         super(topLeftXPos, topLeftYPos, width, height, color);
         setOriginalTopLeftYPos(topLeftYPos);
     }
@@ -53,15 +47,13 @@ public class Bullet extends GameComponent {
 
     // This method fires the bullet by reducing the the y position by Delta_y each update
     public void fireBullet(){
-        topLeftYPos -= DELTA_Y;
+        topLeftYPos += DELTA_Y;
     }
-
-    public void alienFireBullet(){topLeftYPos += DELTA_Y;}
 
     // This method removes a bullet from the ArrayList of bullets once its hit an enemy or passed the top of the screen
     public void removeBullet(){
         if(getTopLeftYPos() + height < 0 || getTopLeftYPos()  > SpaceInvadersGUI.HEIGHT){
-                SpaceInvadersGUI.bullets.remove(this);
+            SpaceInvadersGUI.alienBullets.remove(this);
 
         }
     }
@@ -85,7 +77,14 @@ public class Bullet extends GameComponent {
 
     }
 
+    public boolean collidesWith(GameComponent g)
+    {
+        //for a bullet heading upwards from the tank
+        //if(type.equals("tank"))
+        if(getTopLeftXPos()>=g.getTopLeftXPos() && getTopLeftXPos()<=g.getTopLeftXPos()+g.getWidth())
+            if(Math.abs(getTopLeftYPos()-g.getTopLeftYPos())<=g.getHeight())
+                return true;
 
-
-
+        return false;
+    }
 }

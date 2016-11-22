@@ -111,6 +111,22 @@ public abstract class GameComponent {
 
     public abstract void update();
 
+    public boolean collidesWith(GameComponent g) {
+
+        Rectangle r1 = new Rectangle(g.getTopLeftXPos(), g.getTopLeftYPos(),
+                g.getWidth(), g.getHeight());
+        Rectangle r2 = new Rectangle(this.getTopLeftXPos(), this.getTopLeftYPos(),
+                this.getWidth(), this.getHeight());
+
+        if (r1.intersects(r2)){
+            return true;
+        }
+
+
+        return false;
+    }
+
+
 
     /**
      *

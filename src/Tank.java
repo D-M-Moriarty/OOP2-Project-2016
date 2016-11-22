@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -115,6 +116,52 @@ public class Tank extends GameComponent{
 
         // Resetting deltaX to 0
         deltaX = 0;
+
+        for (int k = 0; k < SpaceInvadersGUI.alienBullets.size(); k++) {
+            AlienBullet bullet = SpaceInvadersGUI.alienBullets.get(k);
+
+
+            Rectangle bulletRect = new Rectangle(bullet.getTopLeftXPos(),
+                    bullet.getTopLeftYPos(),bullet.getWidth(),bullet.getHeight());
+
+            Rectangle alienRect = new Rectangle(this.getTopLeftXPos(),
+                    this.getTopLeftYPos(), this.getWidth(), this.getHeight());
+
+            if (bulletRect.intersects(alienRect)) {
+                System.out.println(getLivesLeft());
+
+                setLivesLeft(getLivesLeft() - 1);
+                SpaceInvadersGUI.tankLife1.setColor(Color.BLACK);
+
+                if(getLivesLeft() == 1){
+                    SpaceInvadersGUI.tankLife2.setColor(Color.BLACK);
+                }
+
+                //SpaceInvadersGUI.setPlayerScore(SpaceInvadersGUI.getPlayerScore() + 10);
+                SpaceInvadersGUI.alienBullets.remove(bullet);
+
+                if (getLivesLeft() < 1){
+                    SpaceInvadersGUI.tankLife3.setColor(Color.BLACK);
+                    this.setTopLeftXPos(-100);
+                    this.setTopLeftYPos(-100);
+                    this.setWidth(-100);
+                    this.setHeight(-100);
+                    JOptionPane.showMessageDialog(null, "Your tank has been destroyed");
+                    try {
+                        Thread.sleep(9999);
+                    }catch (Exception e){e.printStackTrace();}
+
+                    //System.exit(0);
+                }
+
+
+
+            }
+
+
+
+        }
+
     }
 
     public String toString(){
