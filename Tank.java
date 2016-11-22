@@ -1,177 +1,184 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
 
 /**
- * Created by t00168162 on 09/11/2016.
+ * This is an instantiable class called Tank for creating a Tank entity.
+ * It is a sub-class of GameComponent therefore it inherits all of its
+ * attributes and abstract methods
+ *
+ * @author Darren Moriarty
+ * created on 11/11/2016.
+ *
+ * @version 2.0
  */
-public class Tank extends JComponent{
-
-    //THIS CONSTANT IS FOR MY HOME SCREEN HEIGHT
-    private static final int HOME_HEIGHT_REDUCTION = 225;//0 alternate between 300 and zero
-
-    private static final int BODY_WIDTH = 80;
-    private static final int BODY_HEIGHT = 40;
-    private static final int BARREL_HEIGHT = 10;
-    private static final int BARREL_WIDTH = 10;
-    private static final int BODY_X_POS = 300;
-    private static final int BODY_Y_POS = 825 - HOME_HEIGHT_REDUCTION;
-    private static final int BARREL_X_POS = 335;
-    private static final int BARREL_Y_POS = 815 - HOME_HEIGHT_REDUCTION;
-    private int bodyX = BODY_X_POS;
-    private int barrelX = BARREL_X_POS;
-    private Rectangle2D drawBody;
-    private Rectangle2D drawBarrel;
-    private Rectangle2D drawLine;
-    private int[] x = {20,80,100,100,75,75,70,30,25,25,0,0,20};
-    private int[] y = {0,0,20,50,50,42,35,35,42,50,50,20,0};
-    private Polygon barrier;
-    private Polygon barrier2;
-    private Polygon barrier3;
-
-    private Rectangle2D drawBullet;
-    private final int TOP_OF_SCREEN = 0;
-    private Graphics2D bullet;
-
-    Bullet bulletObj = new Bullet();
-
-    private int bulletY = bulletObj.getBulletY();
-    private int bulletX = bulletObj.getBulletX();
+public class Tank extends GameComponent{
 
 
-    public void paint(Graphics g) {
+    // class attributes are made private so that they can not be directly accessed outside this class
 
-        //setting black background
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0, 1000,1000);
+    // Boolean to see which direction to move thev entity
+    private boolean left;
+    private boolean right;
+    // This is the initial amount of lives of the Tank entity
+    private int livesLeft;
+    /* The difference between the initial x position and the new x position
+        This is the amount of pixels the entity will move per second/update */
+    private int deltaX;
+    // The initial speed to travel horizontally
+    private int horizontalSpeed;
 
-        //creating graphics object
-        Graphics2D tank = (Graphics2D)g;
-
-        //smooting the edges
-        tank.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        //drawing the body of the tank
-        drawBody = new Rectangle2D.Float(bodyX, BODY_Y_POS, BODY_WIDTH, BODY_HEIGHT);
-
-        //drawing the barrel of the tank
-        drawBarrel = new Rectangle2D.Float(barrelX, BARREL_Y_POS, BARREL_WIDTH, BARREL_HEIGHT);
-
-        //drawing the line at the bottom of the screen
-        drawLine = new Rectangle2D.Float(25, 650, 925, 10);
-
-        //setting the colour to green
-        tank.setColor(Color.GREEN);
-
-        //drawing the shapes
-        tank.fill(drawBody);
-        tank.fill(drawBarrel);
-        tank.fill(drawLine);
+    private GameMain gameMain;
 
 
-        //barrier graphics
-        Graphics2D barrierG = (Graphics2D)g;
+    /**
+     * 6 argument constructor method
+     *
+     * @param topLeftXPos The initial x coordinate of the instantiated Tank entity object
+     * @param topLeftYPos The initial y coordinate of the instantiated Tank entity object
+     * @param width The initial widht of the entity
+     * @param height The initial height of the Tank entity
+     * @param color The initial colour of the Tank entity
+     * @param livesLeft The initial amount of lives the Tank entity has
+     * @param horizontalSpeed The initial horizontal speed of the Tank entity
+     */
+    public Tank(int topLeftXPos, int topLeftYPos, int width, int height, Color color, int livesLeft, int horizontalSpeed, GameMain gameMain) {
+        super(topLeftXPos, topLeftYPos, width, height, color);
+        setLivesLeft(livesLeft);
+        setHorizontalSpeed(horizontalSpeed);
+        this.gameMain = gameMain;
+    }
 
-        barrierG.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    /**
+     * This sets the amount of the lives for the entity
+     * @param livesLeft is the amount of lives
+     */
+    public void setLivesLeft(int livesLeft) {
+        this.livesLeft = livesLeft;
+    }
 
-        for (int i = 0; i < x.length; i++)
-            x[i] += 100;
+    /**
+     * This returns the amount of lives the entity has remaining
+     * @return the amount of lives left
+     */
+    public int getLivesLeft(){
+        return livesLeft;
+    }
 
-        for (int i = 0; i < y.length; i++)
-            y[i] += 500;
+    public void setLeft(boolean direction){
+        left = direction;
+    }
 
-        barrier = new Polygon(x, y , 13);
+    public void setRight(boolean direction){
+        right = direction;
+    }
 
-        barrierG.setColor(Color.GREEN);
-        barrierG.fill(barrier);
-        // graph.drawPolygon(x, y , 13);
 
-        //CREATING a graphic object to draw the barrier 2
-        Graphics2D barrierG2 = (Graphics2D)g;
+    public void setHorizontalSpeed(int horizontalSpeed) {
+        this.horizontalSpeed = horizontalSpeed;
+    }
 
-        barrierG2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    @Override
+    public void draw(Graphics2D g) {
 
-        for (int i = 0; i < x.length; i++){
-            x[i] += 300;
-        }
-
-        barrierG2.setColor(Color.GREEN);
-        Polygon barrier2 = new Polygon(x, y , 13);
-        barrierG2.fill(barrier2);
-
-        //CREATING a graphic object to draw the barrier 3
-        Graphics2D barrierG3 = (Graphics2D)g;
-
-        barrierG3.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        for (int i = 0; i < x.length; i++){
-            x[i] += 650;
-        }
-
-        barrierG3.setColor(Color.GREEN);
-        barrier3 = new Polygon(x, y , 13);
-        barrierG3.fill(barrier3);
-
-        //Creating the bullet------------------------------------------------
-
-        bullet = (Graphics2D)g;
-
-        //smooting the edges
-        bullet.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        //drawing the bullet
-        drawBullet = new Rectangle2D.Float(bulletObj.getBulletX(), bulletObj.getBulletY()-20, 5, 20);
-
-        //setting the colour to green
-        bullet.setColor(Color.GREEN);
-
-        if(bulletY < 600){
-            bullet.setColor(Color.WHITE);
-        }
-
-        //drawing the shapes
-        bullet.fill(drawBullet);
+        g.setColor(getColor());
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.drawRect(getTopLeftXPos(), getTopLeftYPos(), getWidth(), getHeight());
+        g.fillRect(getTopLeftXPos(), getTopLeftYPos(), getWidth(), getHeight());
 
     }
 
-    //public method to move tank left
-    public void moveLeft(){
+    // This method decides what to do every time the screen refreshes
+    @Override
+    public void update(){
 
-        if(bodyX > 25){
-            bodyX -= 20;
-            barrelX -= 20;
+        // If the left attribute has the value of true
+        if(left){
+            // The next position of deltaX is the value of the horizontal speed ie. 5 pixels to the left
+            deltaX = horizontalSpeed;
+            // The original value of topLeftXPos is now the original value minus the next positions value deltaX
+            topLeftXPos -= deltaX;
+        }
+        // If the right attribute has the value of true
+        if(right){
+            // The next position of x is the value of the horizontal speed ie. 5 pixels to the right
+            deltaX  = horizontalSpeed;
+            // The original value of x is now the original value plus the next positions value
+            topLeftXPos += deltaX;
+        }
 
-            if(bulletY == 610) {
+        // This insures that the entity doesn't travel outside the green line at the bottom of the screen
+        if(topLeftXPos > 1000 - width - 25){
+            topLeftXPos = 1000 - width - 25;
+        }
+        if(topLeftXPos < 25){
+            topLeftXPos = 25;
+        }
 
-                bulletX -= 20;
-                //repaint();
+        // Resetting deltaX to 0
+        deltaX = 0;
+
+        for (int k = 0; k < SpaceInvadersGUI.alienBullets.size(); k++) {
+            AlienBullet bullet = SpaceInvadersGUI.alienBullets.get(k);
+
+
+            Rectangle bulletRect = new Rectangle(bullet.getTopLeftXPos(),
+                    bullet.getTopLeftYPos(),bullet.getWidth(),bullet.getHeight());
+
+            Rectangle alienRect = new Rectangle(this.getTopLeftXPos(),
+                    this.getTopLeftYPos(), this.getWidth(), this.getHeight());
+
+            if (bulletRect.intersects(alienRect)) {
+                System.out.println(getLivesLeft());
+
+                setLivesLeft(getLivesLeft() - 1);
+                SpaceInvadersGUI.tankLife1.setColor(Color.BLACK);
+
+                if(getLivesLeft() == 1){
+                    SpaceInvadersGUI.tankLife2.setColor(Color.BLACK);
+                }
+
+                //SpaceInvadersGUI.setPlayerScore(SpaceInvadersGUI.getPlayerScore() + 10);
+                SpaceInvadersGUI.alienBullets.remove(bullet);
+
+                if (getLivesLeft() < 1){
+                    SpaceInvadersGUI.tankLife3.setColor(Color.BLACK);
+                    this.setTopLeftXPos(-100);
+                    this.setTopLeftYPos(-100);
+                    this.setWidth(-100);
+                    this.setHeight(-100);
+
+                    //Create the player class
+                    String Playername = JOptionPane.showInputDialog(null, "Your tank has been destroyed\nPlease enter your name: ");
+
+                    //gameMain.dispose();
+                    //new GameMain();
+                    //gameMain.gameOver();
+
+                    gameMain.changeContentPane2();
+                    //gameMain.gameOver();
+
+                    /*
+                    try {
+                        Thread.sleep(9999);
+                    }catch (Exception e){e.printStackTrace();}
+                    */
+
+                    //System.exit(0);
+                }
+
+
+
             }
-        }
 
-    }
-    //move the tank to the right
-    public void moveRight(){
 
-        if(bodyX < 880) {
-            bodyX += 20;
-            barrelX += 20;
 
-            if(bulletY == 610){
-
-                bulletX += 20;
-                // repaint();
-            }
         }
 
     }
 
-    public void shootBullet(){
-             bulletY -= 20;
+    public String toString(){
+        return "Tank class is working";
     }
-
-
 
 
 
