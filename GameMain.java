@@ -3,6 +3,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 
 /**
  * This is the main JFrame class with the main method to run the game
@@ -14,18 +17,25 @@ import java.awt.event.ActionListener;
  */
 public class GameMain extends JFrame{
 
-    CardLayout cardLayout = new CardLayout();
-    JPanel welcomeGUI = new WelcomeGUI();
-    JPanel contPanel = new JPanel();
+    private CardLayout cardLayout = new CardLayout();
+    private JPanel welcomeGUI = new WelcomeGUI();
+    private JPanel contPanel = new JPanel();
 
-    SpaceInvadersGUI spaceInvadersGUI;
+    private SpaceInvadersGUI spaceInvadersGUI;
 
-    Container contentPane;
-    ImageIcon imageIcon = new ImageIcon("images/1280x960-space-invaders-press-start-wallpaper.jpg");
-    JButton startGame = new JButton(imageIcon);
+    private Container contentPane;
+    private ImageIcon imageIcon = new ImageIcon("images/1280x960-space-invaders-press-start-wallpaper.jpg");
+    private JButton startGame = new JButton(imageIcon);
 
-    ImageIcon imageIcon2 = new ImageIcon("images/high-scores.png");
-    JButton startGame2 = new JButton(imageIcon2);
+    private ImageIcon imageIcon2 = new ImageIcon("images/high-scores.png");
+    private JButton startGame2 = new JButton(imageIcon2);
+
+    JMenuBar  jmenuBar;
+    JMenu jmenu;
+    JMenuItem jmenuItem;
+
+
+    private LinkedList<Player> highScorers =  new LinkedList<Player>();
 
 
     // JFrame GUI constructor method
@@ -34,6 +44,34 @@ public class GameMain extends JFrame{
         super("Space Invaders");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(200,0);
+
+        jmenuBar = new JMenuBar();
+        jmenu = new JMenu("Info");
+        jmenuItem = new JMenuItem("History");
+
+        jmenu.add(jmenuItem);
+        jmenuBar.add(jmenu);
+        setJMenuBar(jmenuBar);
+
+        jmenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,"Space Invaders (Japanese: スペースインベーダー Hepburn: Supēsu Inbēdā?)\n" +
+                        "is an arcade video game created by Tomohiro Nishikado and released in 1978.\n" +
+                        "It was originally manufactured and sold by Taito in Japan, and was later licensed\n" +
+                "for production in the United States by the Midway division of Bally. Space Invaders is one of\n" +
+                        "the earliest shooting games and the aim is to defeat waves of aliens with a laser\n" +
+                        "cannon to earn as many points as possible. In designing the game, Nishikado drew\n" +
+                        "inspiration from popular media: Breakout, The War of the Worlds, and Star Wars.\n" +
+                                "To complete it, he had to design custom hardware and development tools.\n" +
+                        "\nIt was one of the forerunners of modern video gaming and helped expand the\n" +
+                        "video game industry from a novelty to a global industry (see golden age of video arcade games).\n" +
+                        "When first released, Space Invaders was very successful.\n");
+            }
+        });
+
+
+
 
         contPanel.setLayout(cardLayout);
         welcomeGUI.add(startGame);
@@ -97,9 +135,36 @@ public class GameMain extends JFrame{
 
     }
 
+    public void addToHighScorers(Player highScorers){
+        this.highScorers.add(highScorers);
+    }
+
+    public int getHighScorersSize(){
+
+        return highScorers.size();
+    }
+
+    public void getHighScorers(){
+
+        for (Player player: highScorers) {
+            System.out.println(player);
+        }
+    }
+
+    public void sortHighScorers(){
+
+        for (int i = 0; i < highScorers.size(); i++) {
+
+
+
+        }
+
+    }
+
     public void startGame() {
         spaceInvadersGUI = new SpaceInvadersGUI(this);
-
+        jmenuBar.setVisible(false);
+        pack();
         changeScreen(spaceInvadersGUI);
     }
 
@@ -118,6 +183,7 @@ public class GameMain extends JFrame{
         spaceInvadersGUI.isRunning = false;
         this.dispose();
     }
+
 
     // main method creates a new JFrame called GameMain
     public static void main(String[] args) {

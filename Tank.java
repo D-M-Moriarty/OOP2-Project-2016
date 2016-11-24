@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 /**
  * This is an instantiable class called Tank for creating a Tank entity.
@@ -28,6 +29,11 @@ public class Tank extends GameComponent{
     private int horizontalSpeed;
 
     private GameMain gameMain;
+
+    Player player;
+
+
+
 
 
     /**
@@ -148,7 +154,20 @@ public class Tank extends GameComponent{
                     this.setHeight(-100);
 
                     //Create the player class
-                    String Playername = JOptionPane.showInputDialog(null, "Your tank has been destroyed\nPlease enter your name: ");
+                    player = new Player(SpaceInvadersGUI.getPlayerScore(), JOptionPane.showInputDialog(null, "Your tank has been destroyed\nPlease enter your name: "));
+                    SpaceInvadersGUI.setPlayerScore(0);
+
+
+                    //Keeping track of the highScores
+                    if(gameMain.getHighScorersSize() < 11){
+                        gameMain.addToHighScorers(player);
+
+
+                    }
+
+                    gameMain.getHighScorers();
+
+
 
                     //gameMain.dispose();
                     //new GameMain();
