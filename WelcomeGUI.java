@@ -1,7 +1,5 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * This is the JPanel class which is just a flat container for holding components
@@ -15,25 +13,13 @@ import java.io.IOException;
 public class WelcomeGUI extends JPanel {
 
 
-    // Class Attributes
-    //JButton startGame = new JButton("Start Game");
-
-    // width of the panel
-    public static final int WIDTH = 1000;
-    // height of the panel
-    public static final int HEIGHT = 700;
-
     // JPanel Constructor
     public WelcomeGUI(){
         // Calls the default constructor
         super();
-        // Sets the size of the panel to the Widht and Height constants
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        // Sets the size of the panel to the Width and Height constants
+        setPreferredSize(new Dimension(SpaceInvadersGUI.WIDTH, SpaceInvadersGUI.HEIGHT));
         setBackground(Color.BLACK);
-
-
-
-
         //to make sure the SpaceInvadersGUI can be focused on
         setFocusable(true);
         //gets the focus

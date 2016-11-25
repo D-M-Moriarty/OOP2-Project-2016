@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
 
 /**
  * This is an instantiable class called Tank for creating a Tank entity.
@@ -162,10 +161,14 @@ public class Tank extends GameComponent{
                     if(gameMain.getHighScorersSize() < 11){
                         gameMain.addToHighScorers(player);
 
+                        gameMain.sortHighScorers();
+
+                        if(gameMain.getHighScorersSize() == 11){
+                            gameMain.removeFirstLink();
+                        }
 
                     }
 
-                    gameMain.getHighScorers();
 
 
 
@@ -176,13 +179,7 @@ public class Tank extends GameComponent{
                     gameMain.changeContentPane2();
                     //gameMain.gameOver();
 
-                    /*
-                    try {
-                        Thread.sleep(9999);
-                    }catch (Exception e){e.printStackTrace();}
-                    */
 
-                    //System.exit(0);
                 }
 
 

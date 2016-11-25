@@ -3,8 +3,6 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -17,25 +15,26 @@ import java.util.LinkedList;
  */
 public class GameMain extends JFrame{
 
-    private CardLayout cardLayout = new CardLayout();
+    //private CardLayout cardLayout = new CardLayout();
     private JPanel welcomeGUI = new WelcomeGUI();
-    private JPanel contPanel = new JPanel();
+    //private JPanel contPanel = new JPanel();
 
     private SpaceInvadersGUI spaceInvadersGUI;
+    private HighScores highscores;
 
-    private Container contentPane;
+    //private Container contentPane;
     private ImageIcon imageIcon = new ImageIcon("images/1280x960-space-invaders-press-start-wallpaper.jpg");
     private JButton startGame = new JButton(imageIcon);
 
     private ImageIcon imageIcon2 = new ImageIcon("images/high-scores.png");
     private JButton startGame2 = new JButton(imageIcon2);
 
-    JMenuBar  jmenuBar;
-    JMenu jmenu;
-    JMenuItem jmenuItem;
+    private JMenuBar  jmenuBar;
+    private JMenu jmenu;
+    private JMenuItem jmenuItem;
 
 
-    private LinkedList<Player> highScorers =  new LinkedList<Player>();
+    public LinkedList<Player> highScorers =  new LinkedList<Player>();
 
 
     // JFrame GUI constructor method
@@ -73,7 +72,7 @@ public class GameMain extends JFrame{
 
 
 
-        contPanel.setLayout(cardLayout);
+//        contPanel.setLayout(cardLayout);
         welcomeGUI.add(startGame);
         welcomeGUI.add(startGame2);
 
@@ -100,7 +99,7 @@ public class GameMain extends JFrame{
         startGame2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                viewHighScores();
             }
         });
 
@@ -153,19 +152,47 @@ public class GameMain extends JFrame{
 
     public void sortHighScorers(){
 
+        int smallest;
         for (int i = 0; i < highScorers.size(); i++) {
+            smallest = i;
+            for (int j = i + 1; j < highScorers.size(); j++) {
+                if (highScorers.get(j).getPlayerScore() < highScorers.get(smallest).getPlayerScore()) {
+                    smallest = j;
 
-
+                }
+            }
+            if (smallest != i) {
+                final int tempScore = highScorers.get(i).getPlayerScore();
+                final String tempName = highScorers.get(i).getName();
+                highScorers.get(i).setPlayerScore(highScorers.get(smallest).getPlayerScore());
+                highScorers.get(i).setName(highScorers.get(smallest).getName());
+                highScorers.get(smallest).setPlayerScore(tempScore);
+                highScorers.get(smallest).setName(tempName);
+            }
 
         }
 
+        for (Player player: highScorers) {
+            System.out.println(player.getName() + " has a score of " + player.getPlayerScore());
+        }
+
+    }
+
+    public void removeFirstLink(){
+        highScorers.remove(0);
     }
 
     public void startGame() {
         spaceInvadersGUI = new SpaceInvadersGUI(this);
         jmenuBar.setVisible(false);
-        pack();
         changeScreen(spaceInvadersGUI);
+        pack();
+    }
+
+    public void viewHighScores() {
+        highscores = new HighScores(this);
+        changeScreen(highscores);
+        pack();
     }
 
     public void changeContentPane2() {
@@ -176,14 +203,6 @@ public class GameMain extends JFrame{
         setContentPane(screen);
         screen.requestFocusInWindow();
     }
-
-    public void gameOver() {
-        System.out.println("game over");
-        welcomeGUI.setVisible(true);
-        spaceInvadersGUI.isRunning = false;
-        this.dispose();
-    }
-
 
     // main method creates a new JFrame called GameMain
     public static void main(String[] args) {
