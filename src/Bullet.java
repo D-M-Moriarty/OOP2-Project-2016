@@ -73,6 +73,7 @@ public class Bullet extends GameComponent {
         removeBullet();
 
 
+
     }
 
     @Override

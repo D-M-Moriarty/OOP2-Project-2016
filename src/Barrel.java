@@ -27,6 +27,7 @@ public class Barrel extends GameComponent {
     // Shooting sound
     private Sound firingSound;
 
+
     /**
      * 6 argument constructor method
      *

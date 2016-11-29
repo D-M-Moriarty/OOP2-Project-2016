@@ -43,8 +43,6 @@ public class AlienBullet extends GameComponent {
         this.originalTopLeftYPos = topLeftYPos;
     }
 
-    public void isFiring(boolean fire){ firing = fire; }
-
     // This method fires the bullet by reducing the the y position by Delta_y each update
     public void fireBullet(){
         topLeftYPos += DELTA_Y;
@@ -64,27 +62,16 @@ public class AlienBullet extends GameComponent {
         fireBullet();
         removeBullet();
 
-
     }
 
     @Override
     public void draw(Graphics2D g) {
 
-        g.setColor(Color.WHITE);//getColor();
+        g.setColor(Color.RED);//getColor();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.drawRect(topLeftXPos, topLeftYPos, width, height);
         g.fillRect(topLeftXPos, topLeftYPos, width, height);
 
     }
 
-    public boolean collidesWith(GameComponent g)
-    {
-        //for a bullet heading upwards from the tank
-        //if(type.equals("tank"))
-        if(getTopLeftXPos()>=g.getTopLeftXPos() && getTopLeftXPos()<=g.getTopLeftXPos()+g.getWidth())
-            if(Math.abs(getTopLeftYPos()-g.getTopLeftYPos())<=g.getHeight())
-                return true;
-
-        return false;
-    }
 }

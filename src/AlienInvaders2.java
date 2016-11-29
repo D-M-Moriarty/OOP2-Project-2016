@@ -10,22 +10,39 @@ public class AlienInvaders2 extends GameComponent {
 
     private AlienEntity[][] alienEntities;
 
+    //Setting the firing delay
+    private static int bulletTimingDelay = 2000;
+    //Time spent waiting
+    private static int timeWaiting = 0;
+    private int selectedRow = 4;
+
+    private int deathCount;
+
     public static ImageIcon gerImage = new ImageIcon("images/ger.png");
 
-    private int delta = 1, speed = 1;
+    private int delta = 3, delta2 = 3;
     private static int gerX = -2000;
     private boolean rightBorderReached = false;
     private boolean leftBorderReached = false;
-    private boolean firing;
-    private int randomFiringTime;
+    private boolean firing = true;
 
     private ImageIcon alienImage = new ImageIcon("images/Space-large-invader.png");
     private static ImageIcon alienImage2 =  new ImageIcon("images/mS0hGaS.png");
     private static ImageIcon alienImage3 =  new ImageIcon("images/Space-medium-invader.png");
 
+    private int originalTopLeftXPos;
+    private int originalTopLeftYPos;
+    private int originalHeight;
+    private int originalWidth;
+    private Color originalColor;
 
-    public AlienInvaders2(int topLeftXPos, int topLeftYPos, int width, int height, Color color) {
+    private Player player;
+    private GameMain gameMain;
+
+
+    public AlienInvaders2(int topLeftXPos, int topLeftYPos, int width, int height, Color color, GameMain gameMain) {
         super(topLeftXPos, topLeftYPos, width, height, color);
+        this.gameMain = gameMain;
 
 
         alienEntities = new AlienEntity[5][11];
@@ -40,6 +57,12 @@ public class AlienInvaders2 extends GameComponent {
 
         }
 
+        originalTopLeftXPos = getTopLeftXPos();
+        originalTopLeftYPos = getTopLeftYPos();
+        originalHeight = getHeight();
+        originalWidth = getWidth();
+        originalColor = getColor();
+
 
 
     }
@@ -49,10 +72,6 @@ public class AlienInvaders2 extends GameComponent {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 11; j++) {
-
-//                if(alienEntities[i][j].isDestroyed()){
-//                    System.out.println("Aliens were destroyed");
-//                }
 
 
                 if (!alienEntities[i][j].isDestroyed()) {
@@ -89,7 +108,7 @@ public class AlienInvaders2 extends GameComponent {
                 g.drawImage(gerImage.getImage(), gerX, 10, null);
 
             g.setColor(Color.RED);
-            if (gerX > -20 && gerX < 100) {
+            if (gerX > -20 && gerX < 300) {
                 g.drawString("OH no, Its Ger!!!!!", 400, 20);
             }
 
@@ -104,30 +123,6 @@ public class AlienInvaders2 extends GameComponent {
         if(gerX > 1000){
             gerX = -2000;
         }
-//
-//        for (int i = 0; i < 5; i++) {
-//            for (int j = 0; j < 11; j++) {
-//
-//                if(alienEntities[i][j].getTopLeftXPos() < 1000)
-//                    alienEntities[i][j].topLeftXPos += speed;
-//
-//                if(alienEntities[i][j].topLeftXPos > 1000 - alienEntities[i][j].width  && alienEntities[i][j].topLeftXPos < 1000){
-//                    alienEntities[i][j].topLeftYPos += 20;
-//                    speed = -speed;
-//                    alienEntities[i][j].topLeftXPos += speed;
-//                }
-//
-//                if(alienEntities[i][j].topLeftXPos < 0){
-//                    alienEntities[i][j].topLeftYPos += 20;
-//                    speed = 1;
-//                    alienEntities[i][j].topLeftXPos += speed;
-//                }
-//            }
-//
-//        }
-//
-
-
 
 
         //Firing the enemy Bullets
@@ -137,18 +132,56 @@ public class AlienInvaders2 extends GameComponent {
                 Random rand = new Random();
                 int  randomFire = rand.nextInt(11);
                 int  randomFireRow = rand.nextInt(5);
-                //System.out.println(randomFire);
 
-                if(firing && !alienEntities[4][randomFire].isDestroyed()){
-                    SpaceInvadersGUI.alienBullets.add(new AlienBullet(alienEntities[4][randomFire].getTopLeftXPos() + 20,
-                            alienEntities[4][randomFire].getTopLeftYPos() + 40, 5, 10, Color.WHITE));
+                timeWaiting -= 1;
 
-                    firing = false;
+                if(timeWaiting <= 0 && firing && !alienEntities[randomFireRow][randomFire].isDestroyed()){
+                    SpaceInvadersGUI.alienBullets.add(new AlienBullet(alienEntities[randomFireRow][randomFire].getTopLeftXPos() + 20,
+                            alienEntities[randomFireRow][randomFire].getTopLeftYPos() + 40, 5, 10, Color.RED));
 
+                    SpaceInvadersGUI.alienBullets.add(new AlienBullet(getGerX() + 20,
+                            10 + 40, 5, 10, Color.YELLOW));
+
+                    //firing = false;
+                    timeWaiting = bulletTimingDelay;
+                    //System.out.println(selectedRow);
+
+//                    if(alienEntities[selectedRow][randomFire].isDestroyed()){
+//                        selectedRow--;
+//                    }
                 }
+
+
+
+
 
             }
 
+        }
+
+        //Checking the y axis
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 11; j++) {
+                if(alienEntities[i][j].getTopLeftYPos() + alienEntities[i][j].getHeight() >= 630){
+                    //Create the player class
+                    player = new Player(SpaceInvadersGUI.getPlayerScore(), JOptionPane.showInputDialog(null, "Your tank has been destroyed\nPlease enter your name: "));
+                    SpaceInvadersGUI.setPlayerScore(0);
+
+                    //Keeping track of the highScores
+                    if(gameMain.getHighScorersSize() < 11){
+                        gameMain.addToHighScorers(player);
+
+                        gameMain.sortHighScorers();
+
+                        if(gameMain.getHighScorersSize() == 11){
+                            gameMain.removeFirstLink();
+                        }
+
+                    }
+
+                    gameMain.changeContentPane2();
+                }
+            }
         }
 
 
@@ -187,6 +220,30 @@ public class AlienInvaders2 extends GameComponent {
                         alienEntities[i][j].setTopLeftYPos(-1000);
                         alienEntities[i][j].setDestroyed(true);
 
+                        deathCount++;
+                        System.out.println(deathCount);
+
+                        if (deathCount == 55){
+
+                            for (int l = 0; l < 5; l++) {
+                                for (int m = 0; m < 11; m++) {
+
+                                    alienEntities[l][m].setTopLeftXPos(originalTopLeftXPos + m * originalWidth);
+                                    alienEntities[l][m].setTopLeftYPos(originalTopLeftYPos + l * originalHeight);
+                                    alienEntities[l][m].setWidth(originalWidth);
+                                    alienEntities[l][m].setHeight(originalHeight);
+                                    alienEntities[l][m].setColor(originalColor);
+                                    alienEntities[l][m].setDestroyed(false);
+
+                                }
+                            }
+
+                            delta *= 2;
+                            delta2 *= 2;
+                            deathCount = 0;
+
+                        }
+
                     }
 
 
@@ -214,55 +271,42 @@ public class AlienInvaders2 extends GameComponent {
             }
         }
 
+        //Setting the directions of the aliens
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 11; j++) {
 
+                //Move right
+                if(alienEntities[i][j].getTopLeftXPos() < 1000 && !alienEntities[i][j].isDestroyed())
+                    alienEntities[i][j].setTopLeftXPos(alienEntities[i][j].getTopLeftXPos() + delta);
 
+                //Move left
+                if(alienEntities[i][j].topLeftXPos >= 1000 - alienEntities[i][j].width   && !alienEntities[i][j].isDestroyed()){
+                    for (int k = 0; k < 5; k++) {
+                        for (int l = 0; l < 11; l++) {
+                            delta = -delta2;
+                            //alienEntities[k][l].setTopLeftXPos(alienEntities[k][l].getTopLeftXPos() + delta);
+                            alienEntities[k][l].setTopLeftYPos(alienEntities[k][l].getTopLeftYPos() + Math.abs(10 * delta));
 
-        for(int k = 0; k < 5; k++){
-            for(int j = 0; j < 11; j++){
+                        }
 
-                //System.out.println("Got here!");
+                    }
 
-                //could write methods called reachedRightBorder() and reachedLeftBorder() for the EnemyInvader class
-                //and call them on all aliens[k][j] instead to determine if a border was encountered
-                //if it was then the method would return true and that could be used to exit the loop early
-
-                if(alienEntities[k][j].getTopLeftXPos() +
-                        alienEntities[k][j].getWidth() >= SpaceInvadersGUI.WIDTH &&
-                        !alienEntities[k][j].isDestroyed()){
-
-                    //System.out.println("In the first for loop");
-                    rightBorderReached = true;
-                    delta = -1;
-                    break;
                 }
-                if(alienEntities[k][j].getTopLeftXPos()<=0 && !alienEntities[k][j].isDestroyed()){
 
-                    leftBorderReached = true;
-                    delta = 1;
-                    break;
-                }
-            }
-        }
+                //move back right again
+                if(alienEntities[i][j].topLeftXPos < 0 && !alienEntities[i][j].isDestroyed()){
+                    for (int k = 0; k < 5; k++) {
+                        for (int l = 0; l < 11; l++) {
+                            delta = delta2;
+                            alienEntities[k][l].setTopLeftYPos(alienEntities[k][l].getTopLeftYPos() + Math.abs(10 * delta));
 
-
-        //now update the horizontal position of each invader
-        //if it turns out that the left or right border have been reached then move each invader down 2 pixels
-
-        for(int k = 0; k < 5; k++){
-            for(int j = 0;j < 11; j++){
-
-                alienEntities[k][j].setTopLeftXPos(alienEntities[k][j].getTopLeftXPos() + delta);
-                //System.out.println("In the second for loop");
-
-                if(leftBorderReached || rightBorderReached){
-
-                    alienEntities[k][j].setTopLeftYPos(alienEntities[k][j].getTopLeftYPos() + Math.abs(10 * delta));
+                        }
+                    }
                 }
             }
+
         }
 
-        leftBorderReached = false;
-        rightBorderReached = false;
 
     }
 

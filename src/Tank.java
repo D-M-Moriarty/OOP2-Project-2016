@@ -16,7 +16,7 @@ public class Tank extends GameComponent{
 
     // class attributes are made private so that they can not be directly accessed outside this class
 
-    // Boolean to see which direction to move thev entity
+    // Boolean to see which direction to move the entity
     private boolean left;
     private boolean right;
     // This is the initial amount of lives of the Tank entity
@@ -27,25 +27,26 @@ public class Tank extends GameComponent{
     // The initial speed to travel horizontally
     private int horizontalSpeed;
 
-//    public Tank(){
-//        this(,,,,,);
-//    }
+    private GameMain gameMain;
+
+    Player player;
 
     /**
      * 6 argument constructor method
      *
      * @param topLeftXPos The initial x coordinate of the instantiated Tank entity object
      * @param topLeftYPos The initial y coordinate of the instantiated Tank entity object
-     * @param width The initial widht of the entity
+     * @param width The initial width of the entity
      * @param height The initial height of the Tank entity
      * @param color The initial colour of the Tank entity
      * @param livesLeft The initial amount of lives the Tank entity has
      * @param horizontalSpeed The initial horizontal speed of the Tank entity
      */
-    public Tank(int topLeftXPos, int topLeftYPos, int width, int height, Color color, int livesLeft, int horizontalSpeed) {
+    public Tank(int topLeftXPos, int topLeftYPos, int width, int height, Color color, int livesLeft, int horizontalSpeed, GameMain gameMain) {
         super(topLeftXPos, topLeftYPos, width, height, color);
         setLivesLeft(livesLeft);
         setHorizontalSpeed(horizontalSpeed);
+        this.gameMain = gameMain;
     }
 
     /**
@@ -146,12 +147,26 @@ public class Tank extends GameComponent{
                     this.setTopLeftYPos(-100);
                     this.setWidth(-100);
                     this.setHeight(-100);
-                    JOptionPane.showMessageDialog(null, "Your tank has been destroyed");
-                    try {
-                        Thread.sleep(9999);
-                    }catch (Exception e){e.printStackTrace();}
 
-                    //System.exit(0);
+                    //Create the player class
+                    player = new Player(SpaceInvadersGUI.getPlayerScore(), JOptionPane.showInputDialog(null, "Your tank has been destroyed\nPlease enter your name: "));
+                    SpaceInvadersGUI.setPlayerScore(0);
+
+
+                    //Keeping track of the highScores
+                    if(gameMain.getHighScorersSize() < 11){
+                        gameMain.addToHighScorers(player);
+
+                        gameMain.sortHighScorers();
+
+                        if(gameMain.getHighScorersSize() == 11){
+                            gameMain.removeFirstLink();
+                        }
+
+                    }
+
+                    gameMain.changeContentPane2();
+
                 }
 
 

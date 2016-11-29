@@ -28,7 +28,7 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
     // creating a Graphics object
     private Graphics2D g;
     // Boolean to signify whether the game is running or not
-    private boolean isRunning;
+    public boolean isRunning;
     // Creating an independent process
     private Thread thread;
     // initial Frames per Second
@@ -49,12 +49,15 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
     public static ArrayList<AlienBullet> alienBullets;
     private AlienInvaders2 aliens;
     private static int playerScore = 0;
+    private GameMain gameMain;
 
 
     // JPanel Constructor
-    public SpaceInvadersGUI(){
+    public SpaceInvadersGUI(GameMain gameMain){
         // Calls the default constructor
         super();
+        this.gameMain = gameMain;
+
         // Sets the size of the panel to the Width and Height constants
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
@@ -98,11 +101,11 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         g = (Graphics2D) image.getGraphics();
 
         // Initialises the GameComponents entities
-        tank = new Tank(400, 580, 120, 50, Color.GREEN, 3, 5);
-        tankLife1 = new Tank(920, 10, 60, 25, Color.GREEN, 3, 5);
-        tankLife2 = new Tank(850, 10, 60, 25, Color.GREEN, 3, 5);
-        tankLife3 = new Tank(780, 10, 60, 25, Color.GREEN, 3, 5);
-        barrel = new Barrel(455, 570, 10, 10, Color.GREEN, 5);
+        tank = new Tank(WIDTH/2-60, 580, 120, 50, Color.GREEN, 3, 5, gameMain);
+        tankLife1 = new Tank(920, 10, 60, 25, Color.GREEN, 3, 5, gameMain);
+        tankLife2 = new Tank(850, 10, 60, 25, Color.GREEN, 3, 5, gameMain);
+        tankLife3 = new Tank(780, 10, 60, 25, Color.GREEN, 3, 5, gameMain);
+        barrel = new Barrel(WIDTH/2-5, 570, 10, 10, Color.GREEN, 5);
 
         barrier = new Barrier[3];
 
@@ -110,7 +113,7 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
             barrier[i] = new Barrier(90, 470, 120, 70, Color.GREEN);
 
             if(i == 1){
-                barrier[i] = new Barrier(450, 470, 120, 70, Color.GREEN);
+                barrier[i] = new Barrier(WIDTH/2-60, 470, 120, 70, Color.GREEN);
             }else if (i == 2){
                 barrier[i] = new Barrier(790, 470, 120, 70, Color.GREEN);
             }
@@ -120,14 +123,14 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
 
 
         alien = new AlienInvaders(50, 20, 50, 50, Color.GREEN);
-        aliens = new AlienInvaders2(50, 50, 50, 50, Color.WHITE);
+        aliens = new AlienInvaders2(50, 50, 50, 50, Color.WHITE, gameMain);
 
 
 
-        // Initialising the ArrayList of Bullets
+        // Instantiating the ArrayList of Bullets
         bullets = new ArrayList<Bullet>();
 
-        // Initialising the ArrayList of AlienBullets
+        // Instantiating the ArrayList of AlienBullets
         alienBullets = new ArrayList<AlienBullet>();
 
 
@@ -216,6 +219,7 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
 
     }
 
+
     // Draws to the offscreen image, ie. determines what to draw on the next frame
     private void gameRender() {
 
@@ -223,11 +227,9 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         g.setColor(Color.BLACK);
         g.fillRect(0, 0 , WIDTH, HEIGHT);
         g.setColor(Color.WHITE);
-        g.drawString("The bullet count is: " + bullets.size(), 10, 20);
-        g.drawString("\nSCORE: " + this.getPlayerScore(), 10, 40);
+        g.drawString("The bullet count is: " + alienBullets.size(), 10, 20);
+        g.drawString("\nSCORE: " + getPlayerScore(), 10, 40);
 
-        //g.drawString("The value of tank is: " + tank, 100, 100);
-        //System.out.println(tank);
 
         g.setColor(Color.GREEN);
         //drawing the line at the bottom of the screen
@@ -245,8 +247,6 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
             barrier[i].draw(g);
         }
 
-        //barrier2.draw(g);
-        //barrier3.draw(g);
         aliens.draw(g);
 
         // Drawing ArrayList of bullets
@@ -267,8 +267,16 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
     // drawing on to the game screen
     private void gameDraw() {
         Graphics gRef = this.getGraphics();
-        gRef.drawImage(image, 0 ,0, null);
-        gRef.dispose();
+
+        // Check in class
+        if (tank.getLivesLeft() > 0){
+            gRef.drawImage(image, 0 ,0, null);
+            gRef.dispose();
+        }else {
+            // Save Players score and name and store it
+            isRunning = false;
+        }
+
     }
 
     // KeyListener interface methods

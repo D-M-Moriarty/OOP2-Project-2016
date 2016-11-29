@@ -65,6 +65,8 @@ public class Barrier extends GameComponent {
                         barrierBlocks[i][j].setDestroyed(true);
 
                     }
+
+
                 }
             }
 
