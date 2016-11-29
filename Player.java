@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by t00168162 on 23/11/2016.
  */
-public class Player {
+public class Player implements Serializable{
 
     private int playerScore;
     private String name;
@@ -28,6 +30,6 @@ public class Player {
     }
 
     public String toString(){
-        return "Players name is " + name + " their score is " + playerScore;
+        return "Player: " + name + " score: " + playerScore;
     }
 }

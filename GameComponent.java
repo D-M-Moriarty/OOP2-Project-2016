@@ -64,53 +64,86 @@ public abstract class GameComponent {
         this.topLeftYPos = topLeftYPos;
     }
 
+    /**
+     * mutator method to set the width of the game component
+     * @param width is the width of the game entity
+     */
     public void setWidth(int width) {
         this.width = width;
     }
 
-
+    /**
+     * mutator method to set the height of the game component
+     * @param height is the height of the game entity
+     */
     public void setHeight(int height) {
         this.height = height;
     }
 
-
+    /**
+     * mutator method to set the colour of the game component
+     * @param color is the colour of the game entity
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
-
+    /**
+     * Accessor method to get the value of the top left x position
+     * @return the top left x position of the entity
+     */
     public int getTopLeftXPos() {
         return this.topLeftXPos;
     }
 
-
+    /**
+     *Accessor method to get the value of the top left y position
+     * @return the top left y position of the entity
+     */
     public int getTopLeftYPos() {
         return this.topLeftYPos;
     }
 
-
+    /**
+     * Accessor method to get the value of the width
+     * @return the width of the entity
+     */
     public int getWidth() {
         return this.width;
     }
 
-
+    /**
+     * Accessor method to get the value of the height
+     * @return the height of the entity
+     */
     public int getHeight() {
         return this.height;
     }
 
-
+    /**
+     * Accessor method to get the value of the colour
+     * @return the colour of the entity
+     */
     public Color getColor() {
         return this.color;
     }
 
     /**
      * This method draws graphics to the screen
-     * @param g
+     * @param g is a reference to the graphics object
      */
     public abstract void draw(Graphics2D g);
 
+    /**
+     *
+     */
     public abstract void update();
 
+    /**
+     *
+     * @param g a reference to another GameComponent object
+     * @return the boolean value of true or false, to tell if their has been an intersection
+     */
     public boolean collidesWith(GameComponent g) {
 
         Rectangle r1 = new Rectangle(g.getTopLeftXPos(), g.getTopLeftYPos(),
@@ -121,7 +154,6 @@ public abstract class GameComponent {
         if (r1.intersects(r2)){
             return true;
         }
-
 
         return false;
     }

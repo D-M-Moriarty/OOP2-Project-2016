@@ -16,7 +16,7 @@ public class Tank extends GameComponent{
 
     // class attributes are made private so that they can not be directly accessed outside this class
 
-    // Boolean to see which direction to move thev entity
+    // Boolean to see which direction to move the entity
     private boolean left;
     private boolean right;
     // This is the initial amount of lives of the Tank entity
@@ -31,16 +31,12 @@ public class Tank extends GameComponent{
 
     Player player;
 
-
-
-
-
     /**
      * 6 argument constructor method
      *
      * @param topLeftXPos The initial x coordinate of the instantiated Tank entity object
      * @param topLeftYPos The initial y coordinate of the instantiated Tank entity object
-     * @param width The initial widht of the entity
+     * @param width The initial width of the entity
      * @param height The initial height of the Tank entity
      * @param color The initial colour of the Tank entity
      * @param livesLeft The initial amount of lives the Tank entity has
@@ -169,16 +165,7 @@ public class Tank extends GameComponent{
 
                     }
 
-
-
-
-                    //gameMain.dispose();
-                    //new GameMain();
-                    //gameMain.gameOver();
-
                     gameMain.changeContentPane2();
-                    //gameMain.gameOver();
-
 
                 }
 

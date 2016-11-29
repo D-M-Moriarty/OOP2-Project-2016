@@ -3,6 +3,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
 import java.util.LinkedList;
 
 /**
@@ -31,6 +34,8 @@ public class GameMain extends JFrame{
 
     private JMenuBar  jmenuBar;
     private JMenu jmenu;
+    private JMenu jmenuBack;
+    private JMenuItem itemBack;
     private JMenuItem jmenuItem;
 
 
@@ -44,18 +49,24 @@ public class GameMain extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(200,0);
 
+        loadScores();
+
         jmenuBar = new JMenuBar();
         jmenu = new JMenu("Info");
+        jmenuBack = new JMenu(("Back"));
+        itemBack = new JMenuItem("Back");
         jmenuItem = new JMenuItem("History");
 
         jmenu.add(jmenuItem);
+        jmenuBack.add(itemBack);
         jmenuBar.add(jmenu);
+        jmenuBar.add(jmenuBack);
         setJMenuBar(jmenuBar);
 
         jmenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"Space Invaders (Japanese: スペースインベーダー Hepburn: Supēsu Inbēdā?)\n" +
+                JOptionPane.showMessageDialog(null,"Space Invaders " +
                         "is an arcade video game created by Tomohiro Nishikado and released in 1978.\n" +
                         "It was originally manufactured and sold by Taito in Japan, and was later licensed\n" +
                 "for production in the United States by the Midway division of Bally. Space Invaders is one of\n" +
@@ -66,6 +77,13 @@ public class GameMain extends JFrame{
                         "\nIt was one of the forerunners of modern video gaming and helped expand the\n" +
                         "video game industry from a novelty to a global industry (see golden age of video arcade games).\n" +
                         "When first released, Space Invaders was very successful.\n");
+            }
+        });
+
+        itemBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeContentPane2();
             }
         });
 
@@ -109,27 +127,35 @@ public class GameMain extends JFrame{
         pack();
         setVisible(true);
 
-        //Chaninging the window closing
-//        addWindowListener(
-//                new WindowAdapter(){
-//                    public void windowClosing(WindowEvent e){
-//                        int option = JOptionPane.showConfirmDialog(null,"Are you sure you want to quit the game?");
-//
-//                        if(option == JOptionPane.YES_OPTION){
-//                            setDefaultCloseOperation(EXIT_ON_CLOSE);
-//                        }else{
-//                            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-//                        }
-//                    }//end windowClosing
-//
-//                    public void windowIconified(WindowEvent e){
-//                        JOptionPane.showMessageDialog(null,"Minimising the window");
-//                    }
-//
-//                    public void windowDeiconified(WindowEvent e){
-//                        JOptionPane.showMessageDialog(null,"Restoring the window");
-//                    }
-//                });
+        //Changing the window closing
+        addWindowListener(
+                new WindowAdapter(){
+                    public void windowClosing(WindowEvent e){
+                        int option = JOptionPane.showConfirmDialog(null,"Are you sure you want to quit the game?");
+
+                        if(option == JOptionPane.YES_OPTION){
+                            try{
+                                saveScores();
+                                System.out.println("The save worked");
+                            }
+                            catch (IOException f){
+                                f.printStackTrace();
+                            }
+
+                            setDefaultCloseOperation(EXIT_ON_CLOSE);
+                        }else{
+                            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                        }
+                    }//end windowClosing
+
+                    public void windowIconified(WindowEvent e){
+                        JOptionPane.showMessageDialog(null,"Minimising the window");
+                    }
+
+                    public void windowDeiconified(WindowEvent e){
+                        JOptionPane.showMessageDialog(null,"Restoring the window");
+                    }
+                });
 
 
     }
@@ -197,11 +223,30 @@ public class GameMain extends JFrame{
 
     public void changeContentPane2() {
         changeScreen(welcomeGUI);
+        jmenuBar.setVisible(true);
     }
 
     private void changeScreen(JPanel screen) {
         setContentPane(screen);
         screen.requestFocusInWindow();
+    }
+
+    public void saveScores() throws IOException {
+            ObjectOutputStream oob = new ObjectOutputStream(new FileOutputStream("HighScores.dat"));
+            oob.writeObject(highScorers);
+            oob.close();
+    }
+
+    public void loadScores() {
+        try{
+            ObjectInputStream oobIn = new ObjectInputStream(new FileInputStream("HighScores.dat"));
+             highScorers = (LinkedList<Player>) oobIn.readObject();
+            oobIn.close();
+        }
+        catch (FileNotFoundException e){ e.printStackTrace(); }
+        catch (IOException e){ e.printStackTrace(); }
+        catch (Exception e){ e.printStackTrace(); }
+
     }
 
     // main method creates a new JFrame called GameMain

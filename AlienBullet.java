@@ -43,8 +43,6 @@ public class AlienBullet extends GameComponent {
         this.originalTopLeftYPos = topLeftYPos;
     }
 
-    public void isFiring(boolean fire){ firing = fire; }
-
     // This method fires the bullet by reducing the the y position by Delta_y each update
     public void fireBullet(){
         topLeftYPos += DELTA_Y;
@@ -63,7 +61,6 @@ public class AlienBullet extends GameComponent {
 
         fireBullet();
         removeBullet();
-
 
     }
 

@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.text.Document;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
 import java.awt.*;
 
 /**
@@ -11,6 +8,7 @@ public class HighScores extends JPanel{
 
     private GameMain gameMain;
     private String highScoreText;
+    private JTextArea textArea;
 
     // JPanel Constructor
     public HighScores(GameMain gameMain){
@@ -23,43 +21,23 @@ public class HighScores extends JPanel{
 
         gameMain.getHighScorers();
 
-        for (int i = 0; i < gameMain.highScorers.size(); i++) {
-            System.out.println("Score: \n" + gameMain.highScorers.get(i));
+
+        Font textAreaFont = new Font("monospaced", Font.PLAIN,25);
+
+        textArea = new JTextArea(15, 30);
+
+        textArea.setText(String.format("%9s%12s\n","Name","Score"));
+
+        textArea.setFont(textAreaFont);
+
+        for (int i = gameMain.getHighScorersSize()-1; i >= 0; i--) {
+            textArea.append(String.format("%-5d%-10s%5d\n",(gameMain.getHighScorersSize() - i) ,
+                    gameMain.highScorers.get(i).getName().toString(),
+                    gameMain.highScorers.get(i).getPlayerScore()));
         }
 
-        // create a JEditorPane
-        JEditorPane jEditorPane = new JEditorPane();
+        add(textArea);
 
-        // make it read-only
-        jEditorPane.setEditable(false);
-
-        // add a HTMLEditorKit to the editor pane
-        HTMLEditorKit kit = new HTMLEditorKit();
-        jEditorPane.setEditorKit(kit);
-
-        // now add it to a scroll pane
-        JScrollPane scrollPane = new JScrollPane(jEditorPane);
-
-        // add some styles to the html
-        StyleSheet styleSheet = kit.getStyleSheet();
-        styleSheet.addRule("body {color:#000; font-family:times; margin: 4px; }");
-        styleSheet.addRule("h1 {color: blue;}");
-        styleSheet.addRule("h2 {color: #ff0000;}");
-        styleSheet.addRule("pre {font : 10px monaco; color : black; background-color : #fafafa; }");
-
-        // create a document, set it on the jeditorpane, then add the html
-        Document doc = kit.createDefaultDocument();
-        jEditorPane.setDocument(doc);
-
-        System.out.println("the link size is " + gameMain.getHighScorersSize());
-
-        for (int i = 0; i < gameMain.highScorers.size(); i++) {
-            highScoreText += "Score:" + gameMain.highScorers.get(i);
-        }
-        jEditorPane.setText(highScoreText);
-
-
-        add(jEditorPane);
 
         setFocusable(true);
         //gets the focus

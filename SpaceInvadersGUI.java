@@ -123,7 +123,7 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
 
 
         alien = new AlienInvaders(50, 20, 50, 50, Color.GREEN);
-        aliens = new AlienInvaders2(50, 50, 50, 50, Color.WHITE);
+        aliens = new AlienInvaders2(50, 50, 50, 50, Color.WHITE, gameMain);
 
 
 
@@ -228,10 +228,8 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         g.fillRect(0, 0 , WIDTH, HEIGHT);
         g.setColor(Color.WHITE);
         g.drawString("The bullet count is: " + alienBullets.size(), 10, 20);
-        g.drawString("\nSCORE: " + this.getPlayerScore(), 10, 40);
+        g.drawString("\nSCORE: " + getPlayerScore(), 10, 40);
 
-        //g.drawString("The value of tank is: " + tank, 100, 100);
-        //System.out.println(tank);
 
         g.setColor(Color.GREEN);
         //drawing the line at the bottom of the screen
@@ -249,8 +247,6 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
             barrier[i].draw(g);
         }
 
-        //barrier2.draw(g);
-        //barrier3.draw(g);
         aliens.draw(g);
 
         // Drawing ArrayList of bullets
@@ -273,7 +269,7 @@ public class SpaceInvadersGUI extends JPanel implements Runnable, KeyListener{
         Graphics gRef = this.getGraphics();
 
         // Check in class
-        if (tank.getLivesLeft() > 0){
+        if (tank.getLivesLeft() > 0 && !aliens.getHeightReached()){
             gRef.drawImage(image, 0 ,0, null);
             gRef.dispose();
         }else {
